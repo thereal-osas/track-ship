@@ -1,0 +1,182 @@
+@import "leaflet/dist/leaflet.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+    --card-hover: 24 100% 98%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+
+    --primary: 24 100% 50%; /* Orange */
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 24 100% 45%;
+    --primary-focus: 24 100% 40%;
+
+    --secondary: 24 100% 45%; /* Darker Orange */
+    --secondary-foreground: 0 0% 100%;
+    --secondary-hover: 24 100% 40%;
+
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 24 100% 50%; /* Orange */
+    --accent-foreground: 0 0% 10%;
+    --accent-hover: 24 100% 45%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 24 100% 50%; /* Orange */
+
+    --radius: 0.5rem;
+
+    /* Form specific variables */
+    --form-background: 0 0% 100%;
+    --form-foreground: 0 0% 10%;
+    --form-placeholder: 0 0% 45%;
+    --form-border: 0 0% 80%;
+    --form-focus-ring: 24 100% 50%;
+  }
+
+  .dark {
+    --background: 0 0% 10%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 15%;
+    --card-foreground: 0 0% 98%;
+    --card-hover: 24 30% 15%;
+
+    --popover: 0 0% 15%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 24 100% 50%; /* Orange */
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 24 100% 55%;
+    --primary-focus: 24 100% 60%;
+
+    --secondary: 24 100% 45%; /* Darker Orange */
+    --secondary-foreground: 0 0% 100%;
+    --secondary-hover: 24 100% 50%;
+
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 65%;
+
+    --accent: 24 100% 50%; /* Orange */
+    --accent-foreground: 0 0% 100%;
+    --accent-hover: 24 100% 55%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 30%;
+    --input: 0 0% 30%;
+    --ring: 24 100% 50%; /* Orange */
+
+    /* Form specific variables for dark mode */
+    --form-background: 0 0% 15%;
+    --form-foreground: 0 0% 98%;
+    --form-placeholder: 0 0% 65%;
+    --form-border: 0 0% 40%;
+    --form-focus-ring: 24 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold tracking-tight;
+  }
+
+  h1 {
+    @apply text-3xl md:text-4xl;
+  }
+
+  h2 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl;
+  }
+}
+
+@layer components {
+  /* Custom button styles */
+  .btn-courier {
+    @apply bg-courier-orange text-white font-medium px-4 py-2 rounded-md 
+           transition-all duration-300 hover:bg-courier-orange-dark 
+           hover:shadow-button-hover focus:outline-none focus:ring-2 
+           focus:ring-courier-orange-light focus:ring-opacity-50;
+  }
+
+  /* Card hover effects */
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-card-hover 
+           hover:border-courier-orange-light hover:translate-y-[-2px];
+  }
+
+  /* Navigation link styles */
+  .nav-link {
+    @apply text-courier-black hover:text-courier-orange transition-colors 
+           duration-250 relative after:absolute after:bottom-0 after:left-0 
+           after:w-0 after:h-0.5 after:bg-courier-orange 
+           after:transition-all after:duration-300 hover:after:w-full;
+  }
+
+  /* Status badge styles */
+  .status-badge {
+    @apply px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  /* Container styles */
+  .dhl-container {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+  }
+
+  /* Form input styles with better contrast */
+  .form-input,
+  .form-textarea,
+  .form-select,
+  .form-multiselect {
+    @apply text-foreground border-input bg-background;
+  }
+
+  /* Custom form field container */
+  .form-field {
+    @apply mb-4;
+  }
+
+  /* Form label styles */
+  .form-label {
+    @apply block text-sm font-medium text-foreground mb-1;
+  }
+
+  /* Form error message */
+  .form-error {
+    @apply text-sm text-destructive mt-1;
+  }
+}
