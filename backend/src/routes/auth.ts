@@ -157,4 +157,55 @@ router.get("/me", authenticateToken, async (req, res) => {
   });
 });
 
+// IMPORTANT: Remove this endpoint after creating your admin user!
+router.post("/create-initial-admin", async (req, res) => {
+  const { email, password, secretKey } = req.body;
+
+  // Check the secret key (set this in your environment variables)
+  if (secretKey !== process.env.ADMIN_CREATION_SECRET) {
+    return res.status(403).json({
+      success: false,
+      message: "Invalid secret key",
+    });
+  }
+
+  const client = await db.connect();
+
+  try {
+    // Check if any admin exists
+    const adminCheck = await client.query(
+      "SELECT COUNT(*) FROM users WHERE role = 'admin'"
+    );
+
+    if (parseInt(adminCheck.rows[0].count) > 0) {
+      return res.status(400).json({
+        success: false,
+        message: "An admin user already exists",
+      });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create admin user
+    await client.query(
+      "INSERT INTO users (email, password, role) VALUES ($1, $2, $3)",
+      [email, hashedPassword, "admin"]
+    );
+
+    return res.status(201).json({
+      success: true,
+      message: "Admin user created successfully",
+    });
+  } catch (error) {
+    console.error("Error creating admin:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to create admin user",
+    });
+  } finally {
+    client.release();
+  }
+});
+
 export default router;
