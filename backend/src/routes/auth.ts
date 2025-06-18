@@ -157,8 +157,8 @@ router.get("/me", authenticateToken, async (req, res) => {
   });
 });
 
-// IMPORTANT: Remove this endpoint after creating your admin user!
-router.post("/create-initial-admin", async (req, res) => {
+// Modified endpoint to allow creating additional admin users
+router.post("/create-additional-admin", async (req, res) => {
   const { email, password, secretKey } = req.body;
 
   // Check the secret key (set this in your environment variables)
@@ -172,15 +172,16 @@ router.post("/create-initial-admin", async (req, res) => {
   const client = await db.connect();
 
   try {
-    // Check if any admin exists
-    const adminCheck = await client.query(
-      "SELECT COUNT(*) FROM users WHERE role = 'admin'"
+    // Check if user already exists
+    const existingUser = await client.query(
+      "SELECT * FROM users WHERE email = $1",
+      [email]
     );
 
-    if (parseInt(adminCheck.rows[0].count) > 0) {
+    if (existingUser.rows.length > 0) {
       return res.status(400).json({
         success: false,
-        message: "An admin user already exists",
+        message: "User with this email already exists",
       });
     }
 
